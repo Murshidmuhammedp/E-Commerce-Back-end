@@ -1,9 +1,10 @@
-const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
-const dotenv = require("dotenv")
-
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv"
 dotenv.config();
+
+const app = express();
+
 const PORT = process.env.PORT || 5000
 
 
@@ -15,7 +16,7 @@ app.get('/', (req, res) => {
 // DB connecting
 
 mongoose.connect(process.env.db)
-    .then(() => console.log("DB connected"))
+    .then(() => console.log("DataBase connected"))
     .catch((error) => console.log(error));
 
 app.listen(PORT, () => {
