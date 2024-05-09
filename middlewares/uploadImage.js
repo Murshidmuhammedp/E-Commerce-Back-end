@@ -11,4 +11,30 @@ cloudinary.config({
 
 const storage = multer.diskStorage({
 
-}); 
+});
+
+const upload = multer({
+    storage,
+    limits: {
+        fileSize: 4 * 1024 * 1024, // Set the File size in 4 MB
+    }
+});
+
+const uploadimage = (req, res, next) => {
+    upload.single('image')(req, res, async error => {
+        try {
+            if (req.file) {
+                const uploadResult = await cloudinary.uploader.upload(req.file.path);
+                req.cloudinaryImageUrl = uploadResult.secure_url;
+            }
+            next();
+        } catch (error) {
+            return next(error);
+        }
+    })
+}
+
+export default uploadimage;
+
+
+
