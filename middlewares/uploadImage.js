@@ -11,4 +11,4 @@ cloudinary.config({
 
 const storage = multer.diskStorage({
 
-});
+}); 
