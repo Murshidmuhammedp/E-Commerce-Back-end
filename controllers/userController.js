@@ -48,4 +48,33 @@ export const signup = async (req, res, next) => {
 
 // user login
 
+export const login = async (req, res, next) => {
+    try {
 
+        const { email, password } = req.body;
+
+        // Using findOne to get a single user document
+        const validUser = await User.findOne({ email });
+        if (!validUser) {
+            res.status(404).json({ message: "User not found" });
+        }
+
+        //Check if the account is blocked
+        if (validUser.isDeleted == true) {
+            res.status(400).json({ message: "Your account is suspended" });
+        }
+
+        // Compare the provided password with the hashed password
+        const isValid = bcrypt.compareSync(password, validUser.password);
+        if (!isValid) {
+            res.status(401).json({ message: "Password incorrect" });
+        }
+        res.status(200).json({ message: `Welcome ${validUser.username}` });
+
+
+
+    } catch (error) {
+        next(error)
+    }
+
+}
