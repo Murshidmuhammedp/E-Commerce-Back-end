@@ -71,10 +71,17 @@ export const login = async (req, res, next) => {
         }
         res.status(200).json({ message: `Welcome ${validUser.username}` });
 
+        // JWT setting
+        const token = jwt.sign({ id: validUser._id }, 'shhhhh');
+        const { password: hashedPassword, ...rest } = validUser._doc;
+        const expiryDate = new Date(Date.now() + 60 * 1000);
 
+        // cookie setting 
+        res.cookie('access_token', token, { httpOnly: true, expires: expiryDate })
+            .status(200).json(rest)
 
     } catch (error) {
-        next(error)
+        next(error);
     }
 
 }
