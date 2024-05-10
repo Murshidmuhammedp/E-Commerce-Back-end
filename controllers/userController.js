@@ -71,21 +71,17 @@ export const login = async (req, res, next) => {
         if (!isValid) {
             res.status(401).json({ message: "Password incorrect" });
         }
-        res.status(200).json({ message: `Welcome ${validUser.username}` });
 
         // JWT setting
-        // const JWT_secret_key = crypto.randomBytes(32).toString('hex'); // Generates a 256-bit key in hexadecimal format
-        // console.log(JWT_secret_key);
+        const JWT_secret_key = crypto.randomUUID(10).toString('hex');
 
-        // const token = Jwt.sign({ id: validUser._id }, process.env.USER_JWT_SECRET_KEY);
-        // const { password: hashedPassword, ...rest } = validUser._doc;
-        // const expiryDate = new Date(Date.now() + 60 * 1000);
-        // res.status(200).json(rest);
+        const token = Jwt.sign({ id: validUser._id }, JWT_secret_key);
+        const { password: hashedPassword, ...rest } = validUser._doc;
+        const expiryDate = new Date(Date.now() + 60 * 1000);
         // cookie setting 
-        // res.cookie('access_token', token, { httpOnly: true, expires: expiryDate })
-        //     .status(200).json(rest)
-        // res.status(200).json({ message: "successfully login", data: validUser });
-        // console.log(token);
+        res.cookie('access_token', token, { httpOnly: true, expires: expiryDate })
+            .status(200).json(rest)
+        res.status(200).json({ message: "successfully login", data: validUser });
     } catch (error) {
         next(error);
     }
