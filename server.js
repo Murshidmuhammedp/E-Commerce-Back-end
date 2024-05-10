@@ -7,8 +7,8 @@ import productrouter from "./Routes/adminRoutes.js"
 const app = express();
 dotenv.config();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json())
 app.use(express.json());
 
 

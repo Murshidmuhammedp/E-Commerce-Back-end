@@ -4,22 +4,20 @@ import Product from "../models/productsSchema.js";
 // Create Product
 export const createProduct = async (req, res, next) => {
     try {
-        const { values, error } = productJoi.validate(req.body);
-        if (error) {
+        const values =req.body
+
+        if (values.error) {
             return res.status(400).json({ message: "Validation failed", details: error.details });
         }
-        console.log(req.body,"end");
-
-        const { title, description, price, productImage, category } = req.body;
+        
         const newProduct = new Product({
-            title,
-            description,
-            price,
+            title:values.title,
+            description:values.description,
+            price:values.price,
             productImage: req.cloudinaryImageUrl,
-            category
+            category:values.category
         });
         await newProduct.save();
-
         res.status(201).json({ message: "product added successfully" });
 
     } catch (error) {
