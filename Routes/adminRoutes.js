@@ -3,6 +3,6 @@ import { createProduct } from "../controllers/adminProductController.js";
 import uploadImage from "../middlewares/uploadImage.js";
 const router = express.Router();
 
-router.post('/addproducts', createProduct);
+router.post('/addproducts',uploadImage, createProduct);
 
 export default router;
