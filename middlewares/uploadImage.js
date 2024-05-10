@@ -20,7 +20,7 @@ const upload = multer({
     }
 });
 
-const uploadimage = (req, res, next) => {
+const uploadImage = (req, res, next) => {
     upload.single('image')(req, res, async error => {
         try {
             if (req.file) {
@@ -34,7 +34,7 @@ const uploadimage = (req, res, next) => {
     })
 }
 
-export default uploadimage;
+export default uploadImage;
 
 
 

@@ -1,6 +1,8 @@
-import userjoi from "../Validations/joiValidation.js";
+import userjoi from "../Validations/joiUserValidation.js";
 import User from "../models/userSchema.js";
 import bcrypt from "bcrypt"
+// import crypto from "crypto"
+import Jwt from "jsonwebtoken"
 
 export const signup = async (req, res, next) => {
     try {
@@ -72,14 +74,18 @@ export const login = async (req, res, next) => {
         res.status(200).json({ message: `Welcome ${validUser.username}` });
 
         // JWT setting
-        const token = jwt.sign({ id: validUser._id }, 'shhhhh');
+        // const JWT_secret_key = crypto.randomBytes(32).toString('hex'); // Generates a 256-bit key in hexadecimal format
+        // console.log(JWT_secret_key);
+
+        const token = Jwt.sign({ id: validUser._id }, process.env.USER_JWT_SECRET_KEY);
         const { password: hashedPassword, ...rest } = validUser._doc;
         const expiryDate = new Date(Date.now() + 60 * 1000);
-
+        res.status(200).json(rest);
         // cookie setting 
-        res.cookie('access_token', token, { httpOnly: true, expires: expiryDate })
-            .status(200).json(rest)
-
+        // res.cookie('access_token', token, { httpOnly: true, expires: expiryDate })
+        //     .status(200).json(rest)
+        // res.status(200).json({ message: "successfully login", data: validUser });
+        // console.log(token);
     } catch (error) {
         next(error);
     }
