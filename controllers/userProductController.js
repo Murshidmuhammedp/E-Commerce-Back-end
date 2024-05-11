@@ -14,3 +14,24 @@ export const productView = async (req, res) => {
     }
 };
 
+// View a specific product
+
+export const specificProduct = async (req, res) => {
+    try {
+        const id = req.params.id;
+
+        if (!id) {
+            res.status(404).json({ message: "ID not found" });
+        }
+
+        const product = await Product.findById(id);
+        if (!product) {
+            res.status(404).json({ message: "Product not found" });
+        }
+        res.status(200).json({ message: "successfully fetched product", data: product });
+
+    } catch (error) {
+        next(error)
+    }
+};
+
