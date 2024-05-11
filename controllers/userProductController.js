@@ -53,7 +53,7 @@ export const categoryWise = async (req, res, next) => {
             ]
         });
 
-        if (categories.length==0) {
+        if (categories.length == 0) {
             res.status(404).json({ message: "products not found" });
         }
         res.status(200).json({ message: "successfully fetched categories", data: categories });
