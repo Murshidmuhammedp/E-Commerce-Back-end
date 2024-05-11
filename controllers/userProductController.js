@@ -35,3 +35,21 @@ export const specificProduct = async (req, res) => {
     }
 };
 
+// View the products by category
+
+export const categoryWise = async (req, res) => {
+    try {
+        const category = req.params.category;
+        if (!category) {
+            res.status(404).json({ message: "category not found" });
+        }
+        const categories = await Product.find(category);
+        if (!categories) {
+            res.status(404).json({ message: "category wise not found" });
+        }
+        res.status(200).json({ message: "successfully fetched categories", data: categories });
+        
+    } catch (error) {
+        next(error)
+    }
+};
