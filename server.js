@@ -2,22 +2,20 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv"
 import userrouter from "./Routes/userRouter.js";
-import bodyParser from "body-parser";
-import productrouter from "./Routes/adminRoutes.js"
+import adminrouter from "./Routes/adminRoutes.js";
+import productrouter from "./Routes/productsRoutes.js";
+
 const app = express();
 dotenv.config();
 
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json())
 app.use(express.json());
-
-
 
 // User 
 app.use("/user/api", userrouter);
+app.use("/user/api", productrouter)
 
 // Product
-app.use("/admin/api", productrouter);
+app.use("/admin/api", adminrouter);
 
 // DB connecting
 

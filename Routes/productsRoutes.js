@@ -1,4 +1,12 @@
 import express from "express";
-const router  = express.Router();
+import { allProductView, categoryWise, specificProduct } from "../controllers/userProductController.js";
 
-router.get('')
+const router = express.Router();
+
+
+// Products routes
+router.get('/products', allProductView);
+router.get('/products/:id', specificProduct);
+router.get('/products/category/:category', categoryWise);
+
+export default router;
