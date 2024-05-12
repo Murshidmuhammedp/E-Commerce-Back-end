@@ -25,7 +25,11 @@ const userSchema = new mongoose.Schema({
     isDeleted: {
         type: Boolean,
         default: false
-    }
+    },
+    wishList:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"wishList"
+    }]
 })
 
 const User = mongoose.model("User", userSchema);
