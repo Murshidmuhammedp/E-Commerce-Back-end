@@ -20,13 +20,22 @@ export const addWishList = async (req, res, next) => {
         if (!product) {
             res.status(404).json({ message: "product not found" });
         }
-        
+
         let wishListItem = await wishList.find({ userId: user._id, productId: product._id });
-        if(wishListItem){
+        if (wishListItem) {
             res.status(400).json({ message: "Product already added in the Wishlist" });
         };
-        
 
+        wishListItem = await wishList.create({
+            userId: user._id,
+            productId: product._id,
+            quantity: 1,
+        });
+
+        user.wishList.push(wishListItem._id);
+        await User.save();
+
+        res.status(200).json({ message: "product added wishlist successfully" });
 
     } catch (error) {
         next(error)
