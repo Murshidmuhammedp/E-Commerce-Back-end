@@ -1,11 +1,11 @@
-import Product from "../models/productsSchema";
-import User from "../models/userSchema";
-import wishList from "../models/wishListSchema";
+import Product from "../models/productsSchema.js";
+import User from "../models/userSchema.js";
+import wishList from "../models/wishListSchema.js";
 
 export const addWishList = async (req, res, next) => {
     try {
-        const userId = req.params.userId;
-        const productId = req.params.productId;
+        const userId = req.params.userid;
+        const productId = req.params.productid;
 
         // Find user
         const user = await User.find(userId);
@@ -35,9 +35,37 @@ export const addWishList = async (req, res, next) => {
         user.wishList.push(wishListItem._id);
         await User.save();
 
-        res.status(200).json({ message: "product added wishlist successfully" });
+        res.status(200).json({ message: "product added to wishlist successfully" });
 
     } catch (error) {
         next(error)
+    }
+};
+
+// View user wishList
+
+export const viewWishList = async (req, res, next) => {
+    try {
+        const userid = req.params.userid;
+        res.status(404).json({ message: "not get the userid" });
+
+        const user = await User.find(userid).populate({
+            path: '',
+            populate: { path: '' }
+        });
+
+        if (!user) {
+            res.status(404).json({ message: "User not found" });
+        }
+        if (user.isDeleted == true) {
+            res.status(400).json({ message: "Your account is suspended" });
+        }
+        if (!user.wishList || user.wishList.length === 0) {
+            res.status(200).json({ message: "WishList is empty" });
+        }
+        res.status(200).json(user.wishList);
+
+    } catch (error) {
+        next(error);
     }
 };

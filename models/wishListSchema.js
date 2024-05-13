@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import User from "./userSchema";
 
 const wishListSchema = new mongoose.Schema({
     userId: {
