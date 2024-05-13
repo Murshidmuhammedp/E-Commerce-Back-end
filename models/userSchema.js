@@ -26,10 +26,15 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    wishList:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"wishList"
-    }]
+    cart: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "cart"
+    }],
+    wishList: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "wishList"
+    }],
+
 })
 
 const User = mongoose.model("User", userSchema);

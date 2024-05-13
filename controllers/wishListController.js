@@ -2,6 +2,7 @@ import Product from "../models/productsSchema.js";
 import User from "../models/userSchema.js";
 import wishList from "../models/wishListSchema.js";
 
+// Add wishlist
 export const addWishList = async (req, res, next) => {
     try {
         const userId = req.params.userid;
