@@ -84,6 +84,36 @@ export const removecart = async (req, res, next) => {
         }
         res.status(200).json({ message: "Product removed successfully" });
     } catch (error) {
-        next(error)
+        next(error);
     };
 };
+
+// Quantity Increment in the cart
+export const incrementItemQuantity = async (req, res, next) => {
+    try {
+        const userid = req.params.userid;
+        const productid = req.params.productid;
+        const { ItemQuantity } = req.body;
+
+        const user = await User.findById(userid);
+        if (!user) {
+            res.status(404).json({ message: "User not found" });
+        }
+        const product = await Product.findById(productid);
+        if (!product) {
+            res.status(404).json({ message: "Product not found" });
+        }
+        const Item = await cart.findOne({ userId: user._id, productId: product._id });
+        if (Item) {
+            Item.quantity += ItemQuantity;
+            await Item.save();
+            res.status(200).json({ message: "Quantity Incremented" });
+        } else {
+            res.status(404).json({ message: "product not found in the cart" });
+        }
+
+    } catch (error) {
+        next(error)
+    }
+};
+
