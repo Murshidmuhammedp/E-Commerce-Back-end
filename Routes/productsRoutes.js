@@ -1,7 +1,7 @@
 import express from "express";
 import { allProductView, categoryWise, specificProduct } from "../controllers/userProductController.js";
 import { addWishList, removeWishlist, viewWishList } from "../controllers/wishListController.js";
-import { addCart, viewcart } from "../controllers/cartController.js";
+import { addCart, removecart, viewcart } from "../controllers/cartController.js";
 
 const router = express.Router();
 
@@ -14,6 +14,7 @@ router.get('/products/category/:category', categoryWise);
 // Cart routes
 router.post('/:userid/cart/:productid', addCart);
 router.get('/cart/:userid', viewcart);
+router.delete('/:userid/cart/:productid/remove', removecart);
 
 // WishList routes
 router.post('/:userid/wishlist/:productid', addWishList);

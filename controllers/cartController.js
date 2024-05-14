@@ -57,3 +57,33 @@ export const viewcart = async (req, res, next) => {
         next(error)
     }
 };
+
+// Remove a cart
+
+export const removecart = async (req, res, next) => {
+    try {
+        const userid = req.params.userid;
+        const productid = req.params.productid;
+
+        const user = await User.findById(userid)
+        if (!user) {
+            res.status(404).json({ message: "user not found" });
+        }
+        const product = await Product.findById(productid);
+        if (!product) {
+            res.status(404).json({ message: "product not found" });
+        }
+        const cartitem = await cart.findOneAndDelete({ userId: user._id, productId: product._id });
+        if (!cartitem) {
+            res.status(404).json({ message: "product not found in the cart" })
+        }
+        const cartItemIndex = await user.cart.findIndex(item => item.equals(cartitem._id));
+        if (cartItemIndex !== -1) {
+            user.cart.splice(cartItemIndex, 1)
+            await user.save();
+        }
+        res.status(200).json({ message: "Product removed successfully" });
+    } catch (error) {
+        next(error)
+    };
+};
