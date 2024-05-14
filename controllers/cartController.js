@@ -33,7 +33,27 @@ export const addCart = async (req, res, next) => {
             await user.save()
             res.status(200).json({ message: "product added to cart successfully" });
         }
-    } catch (error) { 
+    } catch (error) {
         next(error);
+    }
+};
+
+// View the user cart
+export const viewcart = async (req, res, next) => {
+    try {
+        const id = req.params.userid;
+        const user = await User.findById(id).populate({
+            path: 'cart',
+            populate: { path: 'productId' }
+        })
+        if (!user) {
+            res.status(404).json({ message: "User not found" });
+        }
+        if (!user.cart || user.cart.length === 0) {
+            res.status(200).json({ message: "Cart is empty" });
+        }
+        res.status(200).json(user.cart);
+    } catch (error) {
+        next(error)
     }
 };
