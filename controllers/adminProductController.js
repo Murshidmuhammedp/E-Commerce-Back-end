@@ -62,5 +62,22 @@ export const specificProduct = async (req, res, next) => {
     }
 };
 
+// Remove a specific product by Id
+
+export const removeProduct = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+
+        const product = await Product.findByIdAndDelete(id);
+        if (!product) {
+            res.status(404).json({ message: "Product not found" });
+        }
+        res.status(200).json({ message: "successfully deleted product" });
+
+    } catch (error) {
+        return next(error);
+    }
+};
+
 
 
