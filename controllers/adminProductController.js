@@ -4,19 +4,19 @@ import Product from "../models/productsSchema.js";
 // Create Product
 export const createProduct = async (req, res, next) => {
     try {
-        const values =req.body
+        const values = req.body
         // const values =await productJoi.validate(req.body);
 
         // if (values.error) {
-        //     return res.status(400).json({ message: "Validation failed", details: error.details });
+        // return res.status(400).json({ message: "Validation failed", details: error.details });
         // }
-        
+
         const newProduct = new Product({
-            title:values.title,
-            description:values.description,
-            price:values.price,
+            title: values.title,
+            description: values.description,
+            price: values.price,
             productImage: req.cloudinaryImageUrl,
-            category:values.category
+            category: values.category
         });
         await newProduct.save();
         res.status(201).json({ message: "product added successfully" });
@@ -27,4 +27,18 @@ export const createProduct = async (req, res, next) => {
 };
 
 // View all products
+
+export const allProductView = async (req, res, next) => {
+    try {
+        const products = await Product.find();
+
+        if (!products) {
+            res.status(404).json({ message: "Products not found" });
+        }
+        res.status(200).json({ message: "successfully fetched products", data: products });
+    } catch (error) {
+        return next(error)
+    }
+};
+
 

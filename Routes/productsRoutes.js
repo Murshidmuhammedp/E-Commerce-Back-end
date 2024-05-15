@@ -1,10 +1,12 @@
 import express from "express";
 import { allProductView, categoryWise, specificProduct } from "../controllers/userProductController.js";
 import { addWishList, removeWishlist, viewWishList } from "../controllers/wishListController.js";
-import { addCart, incrementItemQuantity, removecart, viewcart } from "../controllers/cartController.js";
+import { addCart, decrementItemQuantity, incrementItemQuantity, removecart, viewcart } from "../controllers/cartController.js";
+import { usertoken } from "../middlewares/userJwtToken.js";
 
 const router = express.Router();
 
+// router.use(usertoken);
 
 // Products routes
 router.get('/products', allProductView);
@@ -16,6 +18,7 @@ router.post('/:userid/cart/:productid', addCart);
 router.get('/cart/:userid', viewcart);
 router.delete('/:userid/cart/:productid/remove', removecart);
 router.post('/:userid/cart/:productid/increment', incrementItemQuantity);
+router.post('/:userid/cart/:productid/decrement', decrementItemQuantity);
 
 // WishList routes
 router.post('/:userid/wishlist/:productid', addWishList);

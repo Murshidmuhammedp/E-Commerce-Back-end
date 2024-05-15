@@ -73,13 +73,13 @@ export const login = async (req, res, next) => {
         }
 
         // JWT setting
-        const JWT_secret_key = crypto.randomUUID(10).toString('hex');
+        // const JWT_secret_key = crypto.randomUUID(10).toString('hex');
 
-        const token = Jwt.sign({ id: validUser._id }, JWT_secret_key);
+        const token = Jwt.sign({ id: validUser._id }, process.env.USER_JWT_SECRET_KEY);
         const { password: hashedPassword, ...rest } = validUser._doc;
         const expiryDate = new Date(Date.now() + 60 * 1000);
         // cookie setting 
-        res.cookie('access_token', token, { httpOnly: true, expires: expiryDate })
+        res.cookie('access_token', token, { httpOnly: true, expires: expiryDate });
         res.status(200).json({ message: "successfully login", data: rest });
     } catch (error) {
         next(error);
