@@ -85,6 +85,18 @@ export const viewcategorywise = async (req, res, next) => {
     }
 };
 
+// Edit a specific product
+
+export const editproduct = async (req, res, next) => {
+    try {
+        
+        
+
+    } catch (error) {
+        next(error);
+    }
+};
+
 // Remove a specific product by Id
 
 export const removeProduct = async (req, res, next) => {
