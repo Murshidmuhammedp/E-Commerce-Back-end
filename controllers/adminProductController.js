@@ -62,6 +62,29 @@ export const specificProduct = async (req, res, next) => {
     }
 };
 
+// View the product by category
+
+export const viewcategorywise = async (req, res, next) => {
+    try {
+
+        const name = req.params.category;
+
+        const product = await Product.find({
+            $or: [
+                { title: { $regex: new RegExp(name, "i") } },
+                { category: { $regex: new RegExp(name, "i") } }
+            ]
+        });
+        if (product.length == 0) {
+            res.status(404).json({ message: "products not found" });
+        }
+        res.status(200).json({ message: "successfully fetched categories", data: product });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
 // Remove a specific product by Id
 
 export const removeProduct = async (req, res, next) => {
@@ -70,9 +93,6 @@ export const removeProduct = async (req, res, next) => {
 
         await Product.findByIdAndDelete(id);
 
-        // if (!product) {
-        //     res.status(404).json({ message: "Product not found" });
-        // }
         res.status(200).json({ message: "successfully deleted product" });
 
     } catch (error) {
