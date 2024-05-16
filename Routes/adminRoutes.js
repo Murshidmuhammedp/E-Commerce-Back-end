@@ -1,7 +1,7 @@
 import express from "express";
 import { allProductView, createProduct, removeProduct, specificProduct, viewcategorywise } from "../controllers/adminProductController.js";
 import uploadImage from "../middlewares/uploadImage.js";
-import { viewalluser } from "../controllers/adminUserController.js";
+import { viewalluser, viewspecificuser } from "../controllers/adminUserController.js";
 const router = express.Router();
 
 // Product controller
@@ -15,5 +15,6 @@ router.delete('/removeproduct/:id', removeProduct);
 // User controller
 
 router.get('/usersdata',viewalluser);
+router.get('/userdata/:id',viewspecificuser);
 
 export default router;
