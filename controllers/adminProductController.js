@@ -85,19 +85,42 @@ export const viewcategorywise = async (req, res, next) => {
     }
 };
 
-// Edit a specific product
+// Update product
 
-export const editproduct = async (req, res, next) => {
+export const updateproduct = async (req, res, next) => {
     try {
-        
-        
+        const id = req.params.id;
+        const product = await Product.findById(id);
+        if (!product) {
+            res.status(404).json({ message: "Product not found" });
+        }
+        const { title, description, price, category } = req.body;
+
+        if (title) {
+            product.title = title
+        };
+        if (description) {
+            product.description = description
+        };
+        if (price) {
+            product.price = price
+        };
+        if (req.cloudinaryImageUrl) {
+            product.productImage = req.cloudinaryImageUrl
+        };
+        if (category) {
+            product.category = category
+        };
+
+        await product.save();
+        res.status(200).json({ message: "updated successfully" });
 
     } catch (error) {
-        next(error);
+        return next(error);
     }
 };
 
-// Remove a specific product by Id
+// Delete  product
 
 export const removeProduct = async (req, res, next) => {
     try {
