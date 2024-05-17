@@ -1,6 +1,6 @@
 E-Commerce Backend
 
-Welcome to our E-Commerce Backend project! This repository houses the backend code for an E-Commerce platform, providing both user and admin functionalities. Below, we outline the features and functionalities available for each side:
+Welcome to our E-Commerce Backend project!This project is built using Node js,Express.js, Mongodb. This repository houses the backend code for an E-Commerce platform, providing both user and admin functionalities. Below, we outline the features and functionalities available for each side:
 
 User Side:
 
@@ -15,9 +15,11 @@ User Side:
 Admin Side:
 - Admin login: Administrators can log in to access the admin panel.
 - User management: Admins can view all users registered on the platform and access specific user details.
-- Product management: Admins can view all products categorized by type, access details of a specific product, create new products, delete existing products, and update product information.
+- Product management: Admins can view all products categorized by type, access details of a specific product, create new products, delete existing products, and 
+  update product information.
 - Sales analytics: Admins can track the total number of products purchased and the revenue generated.
 - Order details: Admins can access details of all orders placed on the platform.
+- Block and Unblock Users: Admins have the authority to block or unblock user accounts.
 
 Additional Features:
 
