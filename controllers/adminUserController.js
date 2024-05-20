@@ -6,7 +6,7 @@ export const viewalluser = async (req, res, next) => {
 
         const user = await User.find();
 
-        if (!user) {
+        if (!user || user.length == 0) {
             res.status(404).json({ message: "User's not found" });
         }
         res.status(200).json({ message: "successfully fetched user's data", data: user });

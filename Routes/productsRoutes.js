@@ -3,6 +3,7 @@ import { allProductView, categoryWise, specificProduct } from "../controllers/us
 import { addWishList, removeWishlist, viewWishList } from "../controllers/wishListController.js";
 import { addCart, decrementItemQuantity, incrementItemQuantity, removecart, viewcart } from "../controllers/cartController.js";
 import { usertoken } from "../middlewares/userJwtToken.js";
+import { userPayment } from "../controllers/userPaymentController.js";
 
 const router = express.Router();
 
@@ -24,5 +25,8 @@ router.post('/:userid/cart/:productid/decrement', decrementItemQuantity);
 router.post('/:userid/wishlist/:productid', addWishList);
 router.get('/wishlist/:userid', viewWishList);
 router.delete('/:userid/wishlist/:productid/remove', removeWishlist);
+
+// Payment routes
+router.get('/:id/payment',userPayment);
 
 export default router;
