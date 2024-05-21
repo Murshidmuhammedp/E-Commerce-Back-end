@@ -112,5 +112,28 @@ export const success = async (req, res, next) => {
 // Payment cancel
 
 export const cancel = async (req, res, next) => {
-    res.status(204).json({ message: "payment canceled" })
+    res.status(309).json({ message: "payment canceled" })
+};
+
+// Order details
+
+export const orderDetails = async (req, res, next) => {
+    try {
+        const userId = req.params.id;
+
+        const user = await User.findById(userId).populate({
+            path: "Orders",
+            populate: { path: "productId" }
+        });
+        if (!user) {
+            res.status(404).json({ message: "user not found" });
+        }
+        if (!user.orders || user.orders.length === 0) {
+            res.status(200).json({ message: "Order is empty" });
+        };
+        res.status(200).json(user.orders);
+
+    } catch (error) {
+        next(error);
+    }
 };
