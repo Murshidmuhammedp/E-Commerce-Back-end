@@ -27,6 +27,6 @@ router.get('/wishlist/:userid', viewWishList);
 router.delete('/:userid/wishlist/:productid/remove', removeWishlist);
 
 // Payment routes
-router.get('/:id/payment',userPayment);
+router.post('/:id/payment', userPayment);
 
 export default router;

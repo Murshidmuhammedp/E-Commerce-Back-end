@@ -1,9 +1,9 @@
 import Stripe from "stripe";
 import dotenv from "dotenv";
 import User from "../models/userSchema.js";
+import Orders from "../models/orderSchema.js";
 dotenv.config();
 const stripeInstance = Stripe(process.env.STRIPE_KEY);
-
 
 let Svalue = {};
 
@@ -64,6 +64,45 @@ export const userPayment = async (req, res, next) => {
             message: "Stripe payment session created successfully",
             url: success.url, totalamount, totalquantity,
         });
+    } catch (error) {
+        console.error("error:", error);
+        next(error)
+    }
+};
+
+// Payment success
+
+export const success = async (req, res, next) => {
+    try {
+        const { userId, user, session } = Svalue;
+
+        const cartItems = user.cart;
+        const productItems = cartItems.map((item) => item.productId._id.toString());
+
+        const order = await Orders.create({
+            userId: userId,
+            ProductId: productItems,
+            orderId: session.id,
+            totalPrice: session.amount_total / 100,
+            paymentId: `demo ${Date.now()}`,
+        });
+
+        const orderId = order._id;
+        const userUpdate = await User.findOneAndUpdate(
+            { _id: userId },
+            {
+                $push: { Orders: orderId },
+                $set: { cart: [] },
+            },
+            { new: true }
+        );
+
+        if (!userUpdate) {
+            res.status(500).json({ message: "Failed to update user data" });
+        }
+        await User.deleteMany({ _id: { $in: cartItems.map(item => item._id) } });
+        res.status(200).json({ message: "Payment successful" });
+
     } catch (error) {
         console.error("error:", error);
         next(error)
