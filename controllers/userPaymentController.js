@@ -112,5 +112,5 @@ export const success = async (req, res, next) => {
 // Payment cancel
 
 export const cancel = async (req, res, next) => {
-res.status(204).json({message:"payment canceled"})
+    res.status(204).json({ message: "payment canceled" })
 };
