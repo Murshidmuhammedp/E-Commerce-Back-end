@@ -4,10 +4,13 @@ import User from "../models/userSchema.js";
 dotenv.config();
 const stripeInstance = Stripe(process.env.STRIPE_KEY);
 
+
+let Svalue = {};
+
 export const userPayment = async (req, res, next) => {
     try {
-        const id = req.params.id;
-        const user = await User.findById(id).populate({
+        const userid = req.params.id;
+        const user = await User.findById(userid).populate({
             path: "cart",
             populate: {
                 path: "productId"
@@ -44,18 +47,25 @@ export const userPayment = async (req, res, next) => {
             payment_method_type: ["card"],
             line_items: totals,
             mode: "payment",
-            success_url:
-                cancel_url:
+            success_url: "http://example.com/success",
+            cancel_url: "http://example.com/cancel",
         });
 
         if (!session) {
             res.status(500).json({ message: "Error occurred while creating session" });
         }
 
-
-
-        
+        Svalue = {
+            userId,
+            user,
+            session,
+        };
+        res.status(200).json({
+            message: "Stripe payment session created successfully",
+            url: success.url, totalamount, totalquantity,
+        });
     } catch (error) {
+        console.error("error:", error);
         next(error)
     }
 };
