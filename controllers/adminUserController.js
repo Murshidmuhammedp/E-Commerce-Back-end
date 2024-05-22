@@ -1,4 +1,28 @@
+import Jwt from "jsonwebtoken";
 import User from "../models/userSchema.js";
+import dotenv from "dotenv";
+dotenv.config();
+
+// Admin Login
+
+export const adminLogin = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+
+        if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+            const token = Jwt.sign({ email }, process.env.ADMIN_JWT_SECRET_KEY);
+
+            res.cookie('access_token', token, { httpOnly: true })
+                .status(200).json({ message: "admin login successfully", token });
+
+        } else {
+            return res.status(404).json({ message: "Unauthorized" });
+        }
+
+    } catch (error) {
+        next(error);
+    }
+};
 
 // view all user's data
 export const viewalluser = async (req, res, next) => {
