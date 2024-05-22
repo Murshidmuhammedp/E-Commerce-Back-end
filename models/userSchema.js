@@ -34,8 +34,11 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "wishList"
     }],
-
-})
+    Orders: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Orders"
+    }],
+});
 
 const User = mongoose.model("User", userSchema);
 export default User;

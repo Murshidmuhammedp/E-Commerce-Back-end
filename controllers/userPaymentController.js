@@ -2,9 +2,10 @@ import Stripe from "stripe";
 import dotenv from "dotenv";
 import User from "../models/userSchema.js";
 import Orders from "../models/orderSchema.js";
+import cart from "../models/cartSchema.js";
 dotenv.config();
 const stripeInstance = Stripe(process.env.STRIPE_KEY);
-
+console.log(stripeInstance);
 let Svalue = {};
 
 export const userPayment = async (req, res, next) => {
@@ -30,6 +31,8 @@ export const userPayment = async (req, res, next) => {
         const totals = usercart.map((item) => {
             totalamount += item.productId.price * item.quantity;
             totalquantity += item.quantity;
+            // console.log(totalamount);
+            // console.log(totalquantity);
             return {
                 price_data: {
                     currency: "INR",
@@ -100,7 +103,7 @@ export const success = async (req, res, next) => {
         if (!userUpdate) {
             res.status(500).json({ message: "Failed to update user data" });
         }
-        await User.deleteMany({ _id: { $in: cartItems.map(item => item._id) } });
+        await cart.deleteMany({ _id: { $in: cartItems.map(item => item._id) } });
         res.status(200).json({ message: "Payment successful" });
 
     } catch (error) {
@@ -128,10 +131,10 @@ export const orderDetails = async (req, res, next) => {
         if (!user) {
             res.status(404).json({ message: "user not found" });
         }
-        if (!user.orders || user.orders.length === 0) {
+        if (!user.Orders || user.Orders.length === 0) {
             res.status(200).json({ message: "Order is empty" });
         };
-        res.status(200).json(user.orders);
+        res.status(200).json(user.Orders);
 
     } catch (error) {
         next(error);
