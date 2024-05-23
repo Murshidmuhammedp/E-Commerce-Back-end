@@ -5,7 +5,7 @@ import Orders from "../models/orderSchema.js";
 import cart from "../models/cartSchema.js";
 dotenv.config();
 const stripeInstance = Stripe(process.env.STRIPE_KEY);
-console.log(stripeInstance);
+
 let Svalue = {};
 
 export const userPayment = async (req, res, next) => {
@@ -31,8 +31,7 @@ export const userPayment = async (req, res, next) => {
         const totals = usercart.map((item) => {
             totalamount += item.productId.price * item.quantity;
             totalquantity += item.quantity;
-            // console.log(totalamount);
-            // console.log(totalquantity);
+
             return {
                 price_data: {
                     currency: "INR",
@@ -47,7 +46,7 @@ export const userPayment = async (req, res, next) => {
         });
 
         const session = await stripeInstance.checkout.sessions.create({
-            payment_method_type: ["card"],
+            payment_method_types: ["card"],
             line_items: totals,
             mode: "payment",
             success_url: "http://example.com/success",
@@ -59,13 +58,15 @@ export const userPayment = async (req, res, next) => {
         }
 
         Svalue = {
-            userId,
+            userid,
             user,
             session,
         };
         res.status(200).json({
             message: "Stripe payment session created successfully",
-            url: success.url, totalamount, totalquantity,
+            url: session.url,
+            totalamount,
+            totalquantity,
         });
     } catch (error) {
         console.error("error:", error);
@@ -77,13 +78,14 @@ export const userPayment = async (req, res, next) => {
 
 export const success = async (req, res, next) => {
     try {
-        const { userId, user, session } = Svalue;
+        const { userid, user, session } = Svalue;
 
         const cartItems = user.cart;
-        const productItems = cartItems.map((item) => item.productId._id.toString());
+        const productItems = cartItems.map((item) => item.productId._id);
+
 
         const order = await Orders.create({
-            userId: userId,
+            userId: userid,
             ProductId: productItems,
             orderId: session.id,
             totalPrice: session.amount_total / 100,
@@ -92,7 +94,7 @@ export const success = async (req, res, next) => {
 
         const orderId = order._id;
         const userUpdate = await User.findOneAndUpdate(
-            { _id: userId },
+            { _id: userid },
             {
                 $push: { Orders: orderId },
                 $set: { cart: [] },
@@ -112,12 +114,6 @@ export const success = async (req, res, next) => {
     }
 };
 
-// Payment cancel
-
-export const cancel = async (req, res, next) => {
-    res.status(309).json({ message: "payment canceled" })
-};
-
 // Order details
 
 export const orderDetails = async (req, res, next) => {
@@ -125,9 +121,13 @@ export const orderDetails = async (req, res, next) => {
         const userId = req.params.id;
 
         const user = await User.findById(userId).populate({
-            path: "Orders",
-            populate: { path: "productId" }
+            path: 'Orders',
+            populate:
+            {
+                path: 'ProductId'
+            }
         });
+        console.log(user);
         if (!user) {
             res.status(404).json({ message: "user not found" });
         }

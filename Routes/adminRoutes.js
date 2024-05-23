@@ -2,14 +2,15 @@ import express from "express";
 import { allProductView, createProduct, removeProduct, specificProduct, updateproduct, viewcategorywise } from "../controllers/adminProductController.js";
 import uploadImage from "../middlewares/uploadImage.js";
 import { adminLogin, userBlockandUnblock, viewUserNameWise, viewalluser, viewspecificuser } from "../controllers/adminUserController.js";
+import { admintoken } from "../middlewares/adminJwtToken.js";
 const router = express.Router();
 
-// router.use()
 
 // Admin Login
 router.post('/login', adminLogin);
 
 // Product controller
+router.use(admintoken);
 
 router.post('/addproducts', uploadImage, createProduct);
 router.get('/viewproducts', allProductView);

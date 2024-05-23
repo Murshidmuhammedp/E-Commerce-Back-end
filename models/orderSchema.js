@@ -6,11 +6,11 @@ const orderSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    ProductId: {
+    ProductId: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product",
         required: true
-    },
+    }],
     purchaseDate: {
         type: Date,
         required: true,
@@ -30,7 +30,7 @@ const orderSchema = new mongoose.Schema({
         required: true
     },
     paymentId: {
-        type:String,
+        type: String,
         required: true
     }
 });

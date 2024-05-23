@@ -3,11 +3,11 @@ import { allProductView, categoryWise, specificProduct } from "../controllers/us
 import { addWishList, removeWishlist, viewWishList } from "../controllers/wishListController.js";
 import { addCart, decrementItemQuantity, incrementItemQuantity, removecart, viewcart } from "../controllers/cartController.js";
 import { usertoken } from "../middlewares/userJwtToken.js";
-import { cancel, orderDetails, success, userPayment } from "../controllers/userPaymentController.js";
+import { orderDetails, success, userPayment } from "../controllers/userPaymentController.js";
 
 const router = express.Router();
 
-// router.use(usertoken);
+router.use(usertoken);
 
 // Products routes
 router.get('/products', allProductView);
@@ -29,7 +29,6 @@ router.delete('/:userid/wishlist/:productid/remove', removeWishlist);
 // Payment routes
 router.post('/:id/payment', userPayment);
 router.get('/payment/success', success);
-router.post('/payment/cancel', cancel);
-router.get('/:id/orderdetails',orderDetails);
+router.get('/:id/orderdetails', orderDetails);
 
 export default router;
