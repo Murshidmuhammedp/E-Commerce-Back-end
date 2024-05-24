@@ -7,7 +7,7 @@ import { orderDetails, success, userPayment } from "../controllers/userPaymentCo
 
 const router = express.Router();
 
-router.use(usertoken);
+// router.use(usertoken);
 
 // Products routes
 router.get('/products', allProductView);
