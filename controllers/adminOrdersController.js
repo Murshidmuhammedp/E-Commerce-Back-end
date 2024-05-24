@@ -28,7 +28,7 @@ export const Revenue = async (req, res, next) => {
             {
                 $group: {
                     _id: null,
-                    totalProduct: { $sum: { $size: "$productId" } },
+                    totalProduct: { $sum: { $size: "$ProductId" } },
                     totalRevenue: { $sum: "$totalPrice" }
                 }
             }
