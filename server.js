@@ -11,16 +11,17 @@ dotenv.config();
 
 app.use(express.json());
 
+app.use(cors({
+    origin: "http://localhost:2222",
+    credentials: true
+}));
+
 // User 
 app.use("/user/api", userrouter);
 app.use("/user/api", productrouter);
 // Product
 app.use("/admin/api", adminrouter);
 
-app.use(cors({
-    origin: "http://localhost:2222/",
-    credentials: true
-}));
 
 // DB connecting
 
