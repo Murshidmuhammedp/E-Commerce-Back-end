@@ -1,14 +1,13 @@
 import userjoi from "../Validations/joiUserValidation.js";
 import User from "../models/userSchema.js";
 import bcrypt from "bcrypt"
-// import crypto from "crypto"
 import Jwt from "jsonwebtoken"
 
 export const signup = async (req, res, next) => {
     try {
 
         // Validate the incoming request using the Joi schema
-        
+
         const { value, error } = userjoi.validate(req.body);
 
         // Handle validation error
@@ -84,11 +83,11 @@ export const login = async (req, res, next) => {
         }
 
         // JWT setting
-        // const JWT_secret_key = crypto.randomUUID(10).toString('hex');
 
         const token = Jwt.sign({ id: validUser._id }, process.env.USER_JWT_SECRET_KEY);
         const { password: hashedPassword, ...rest } = validUser._doc;
         const expiryDate = new Date(Date.now() + 60 * 1000);
+
         // cookie setting 
         res.cookie('access_token', token, { httpOnly: true, expires: expiryDate });
         res.status(200).json({ message: "successfully login", data: rest });

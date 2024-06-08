@@ -10,7 +10,8 @@ const router = express.Router();
 // Admin Login
 router.post('/login', adminLogin);
 
-// router.use(admintoken);
+router.use(admintoken);
+
 // Product controller
 
 router.post('/addproducts', uploadImage, createProduct);

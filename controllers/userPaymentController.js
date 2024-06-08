@@ -55,7 +55,7 @@ export const userPayment = async (req, res, next) => {
 
         if (!session) {
             res.status(500).json({ message: "Error occurred while creating session" });
-        }
+        };
 
         Svalue = {
             userid,
