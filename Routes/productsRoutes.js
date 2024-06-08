@@ -11,7 +11,7 @@ router.use(usertoken);
 
 // Products routes
 router.get('/products', allProductView);
-router.get('/products/:id', specificProduct);
+router.get('/products/:id', specificProduct); 
 router.get('/products/category/:category', categoryWise);
 
 // Cart routes

@@ -23,7 +23,7 @@ export const addCart = async (req, res, next) => {
         }
         let cartItem = await cart.findOne({ userId: user._id, productId: product._id });
         if (cartItem) {
-            res.status(404).json({ message: "Product already added in the cart" })
+            res.status(200).json({ message: "Product already added in the cart" })
         } else {
             cartItem = await cart.create({
                 userId: user._id,
@@ -32,7 +32,7 @@ export const addCart = async (req, res, next) => {
             });
             user.cart.push(cartItem._id);
             await user.save()
-            res.status(200).json({ message: "product added to cart successfully" });
+            res.status(200).json({ message: "The product has been successfully added to your cart." });
         }
     } catch (error) {
         next(error);

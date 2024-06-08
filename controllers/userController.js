@@ -18,7 +18,7 @@ export const signup = async (req, res, next) => {
 
         // extract data
 
-        const { username, email, profileImg, password } = value;
+        const { username, email, number, password } = value;
 
         // Check if user already exists 
 
@@ -36,7 +36,7 @@ export const signup = async (req, res, next) => {
         const newUser = new User({
             username,
             email,
-            profileImg: req.cloudinaryImageUrl,
+            number,
             password: hashedPassword
         });
 
@@ -90,7 +90,7 @@ export const login = async (req, res, next) => {
 
         // cookie setting 
         res.cookie('access_token', token, { httpOnly: true, expires: expiryDate });
-        res.status(200).json({ message: "successfully login", data: rest });
+        res.status(200).json({ message: "successfully login", token, data: rest });
     } catch (error) {
         next(error);
     }
