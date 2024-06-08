@@ -20,7 +20,7 @@ export const adminLogin = async (req, res, next) => {
         }
 
     } catch (error) {
-        next(error);
+        return next(error);
     }
 };
 
@@ -31,11 +31,11 @@ export const viewalluser = async (req, res, next) => {
         const user = await User.find();
 
         if (!user || user.length == 0) {
-            res.status(404).json({ message: "User's not found" });
+            return res.status(404).json({ message: "User's not found" });
         }
-        res.status(200).json({ message: "successfully fetched user's data", data: user });
+        return res.status(200).json({ message: "successfully fetched user's data", data: user });
     } catch (error) {
-        next(error);
+        return next(error);
     }
 };
 
@@ -48,11 +48,11 @@ export const viewspecificuser = async (req, res, next) => {
         const user = await User.findById(id);
 
         if (!user) {
-            res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ message: "User not found" });
         }
-        res.status(200).json({ message: "successfully fetched user data", data: user });
+        return res.status(200).json({ message: "successfully fetched user data", data: user });
     } catch (error) {
-        next(error);
+        return next(error);
     }
 };
 
@@ -67,12 +67,12 @@ export const viewUserNameWise = async (req, res, next) => {
             username: { $regex: new RegExp(name, "i") }
         });
         if (user.length == 0) {
-            res.status(404).json({ message: "User's not found" });
+            return res.status(404).json({ message: "User's not found" });
         }
-        res.status(200).json({ message: "successfully fetched user data", data: user });
+        return res.status(200).json({ message: "successfully fetched user data", data: user });
 
     } catch (error) {
-        next(error);
+        return next(error);
     }
 };
 
@@ -85,7 +85,7 @@ export const userBlockandUnblock = async (req, res, next) => {
         const user = await User.findById(id);
 
         if (!user) {
-            res.status(404).json({ message: "user not found" });
+            return res.status(404).json({ message: "user not found" });
         }
         if (user.isDeleted == false) {
             (user.isDeleted = true);
@@ -98,6 +98,6 @@ export const userBlockandUnblock = async (req, res, next) => {
         }
 
     } catch (error) {
-        next(error);
+        return next(error);
     }
 };

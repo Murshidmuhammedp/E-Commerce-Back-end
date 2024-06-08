@@ -48,9 +48,9 @@ export const signup = async (req, res, next) => {
 
         return res.status(201).json({ message: "user created successfully", data: newUser });
     } catch (error) {
-        res.status(422).json({ message: "validation error", Details: error })
+        return res.status(422).json({ message: "validation error", Details: error })
 
-        next(error);
+        return next(error);
     };
 };
 
@@ -66,20 +66,20 @@ export const login = async (req, res, next) => {
 
         const validUser = await User.findOne({ email });
         if (!validUser) {
-            res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ message: "User not found" });
         }
 
         //Check if the account is blocked
 
         if (validUser.isDeleted == true) {
-            res.status(400).json({ message: "Your account is suspended" });
+            return res.status(400).json({ message: "Your account is suspended" });
         }
 
         // Compare the provided password with the hashed password
 
         const isValid = bcrypt.compareSync(password, validUser.password);
         if (!isValid) {
-            res.status(401).json({ message: "Password incorrect" });
+            return res.status(401).json({ message: "Password incorrect" });
         }
 
         // JWT setting
@@ -90,9 +90,9 @@ export const login = async (req, res, next) => {
 
         // cookie setting 
         res.cookie('access_token', token, { httpOnly: true, expires: expiryDate });
-        res.status(200).json({ message: "successfully login", token, data: rest });
+        return res.status(200).json({ message: "successfully login", token, data: rest });
     } catch (error) {
-        next(error);
+        return next(error);
     }
 
 };

@@ -5,15 +5,15 @@ dotenv.config()
 
 export const usertoken = (req, res, next) => {
     try {
-        const token = req.header["authorization"];
-
+        const token = req.headers["authorization"];
+        console.log(token);
         if (!token) {
-            res.status(403).json({ message: "Token is not provided" });
+            return res.status(403).json({ message: "Token is not provided" });
         }
 
         Jwt.verify(token, process.env.USER_JWT_SECRET_KEY, (err, decode) => {
             if (err) {
-                res.status(401).json({ message: "Unauthorized" });
+                return res.status(401).json({ message: "Unauthorized" });
             }
             req.email = decode.email;
             next();

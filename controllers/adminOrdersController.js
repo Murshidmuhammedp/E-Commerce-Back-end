@@ -6,11 +6,11 @@ export const adminOrders = async (req, res, next) => {
     try {
         const orders = await Orders.find()
         if (!orders || orders.length === 0) {
-            res.status(404).json({ message: "not fetch data .try again" });
+            return res.status(404).json({ message: "not fetch data .try again" });
         }
-        res.status(200).json({ message: "successfully fetched", data: orders });
+        return res.status(200).json({ message: "successfully fetched", data: orders });
     } catch (error) {
-        next(error);
+        return next(error);
     }
 };
 
@@ -34,11 +34,11 @@ export const Revenue = async (req, res, next) => {
             }
         ]);
         if (total.length > 0) {
-            res.status(200).json({ message: "success", data: total[0] });
+            return res.status(200).json({ message: "success", data: total[0] });
         } else {
-            res.status(200).json({ message: "success", data: { totalProduct: 0, totalRevenue: 0 } });
+            return res.status(200).json({ message: "success", data: { totalProduct: 0, totalRevenue: 0 } });
         }
     } catch (error) {
-        next(error);
+        return next(error);
     }
 };

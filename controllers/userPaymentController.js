@@ -18,12 +18,12 @@ export const userPayment = async (req, res, next) => {
             }
         });
         if (!user || user.length === 0) {
-            res.status(404).json({ message: "user not found" });
+            return res.status(404).json({ message: "user not found" });
         }
         const usercart = user.cart;
 
         if (usercart.length === 0) {
-            res.status(404).json({ message: "Cart is empty" });
+            return res.status(404).json({ message: "Cart is empty" });
         }
         let totalamount = 0;
         let totalquantity = 0;
@@ -54,7 +54,7 @@ export const userPayment = async (req, res, next) => {
         });
 
         if (!session) {
-            res.status(500).json({ message: "Error occurred while creating session" });
+            return res.status(500).json({ message: "Error occurred while creating session" });
         };
 
         Svalue = {
@@ -70,7 +70,7 @@ export const userPayment = async (req, res, next) => {
         });
     } catch (error) {
         console.error("error:", error);
-        next(error)
+        return next(error)
     }
 };
 
@@ -103,14 +103,14 @@ export const success = async (req, res, next) => {
         );
 
         if (!userUpdate) {
-            res.status(500).json({ message: "Failed to update user data" });
+            return res.status(500).json({ message: "Failed to update user data" });
         }
         await cart.deleteMany({ _id: { $in: cartItems.map(item => item._id) } });
-        res.status(200).json({ message: "Payment successful" });
+        return res.status(200).json({ message: "Payment successful" });
 
     } catch (error) {
         console.error("error:", error);
-        next(error)
+        return next(error)
     }
 };
 
@@ -129,14 +129,14 @@ export const orderDetails = async (req, res, next) => {
         });
 
         if (!user) {
-            res.status(404).json({ message: "user not found" });
+            return res.status(404).json({ message: "user not found" });
         }
         if (!user.Orders || user.Orders.length === 0) {
-            res.status(200).json({ message: "Order is empty" });
+            return res.status(200).json({ message: "Order is empty" });
         };
-        res.status(200).json(user.Orders);
+        return res.status(200).json(user.Orders);
 
     } catch (error) {
-        next(error);
+        return next(error);
     }
 };
